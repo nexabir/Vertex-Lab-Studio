@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FCFBF8;
+  color: #14131F;
+  font-feature-settings: "ss01";
+}
+
+::selection {
+  background-color: #6D4AFF;
+  color: #F5F3EE;
+}
+
+:focus-visible {
+  outline: 2px solid #6D4AFF;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+textarea, input, select {
+  font-family: var(--font-body), sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.prose-vls h1, .prose-vls h2, .prose-vls h3 {
+  font-family: var(--font-display), sans-serif;
+  color: #14131F;
+  font-weight: 500;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  line-height: 1.25;
+}
+.prose-vls h1 { font-size: 26px; }
+.prose-vls h2 { font-size: 22px; }
+.prose-vls h3 { font-size: 18px; }
+.prose-vls p { margin-bottom: 1.4em; }
+.prose-vls ul, .prose-vls ol { margin: 0 0 1.4em 1.2em; }
+.prose-vls li { margin-bottom: 0.4em; }
+.prose-vls ul { list-style: disc; }
+.prose-vls ol { list-style: decimal; }
+.prose-vls a { color: #14131F; text-decoration: underline; text-underline-offset: 2px; }
+.prose-vls strong { color: #14131F; font-weight: 600; }
+.prose-vls blockquote {
+  border-left: 3px solid #6D4AFF;
+  padding-left: 1em;
+  color: #44434F;
+  font-style: italic;
+  margin: 1.4em 0;
+}
+.prose-vls code {
+  background: #F5F3EE;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.prose-vls img { border-radius: 1rem; margin: 1.4em 0; }

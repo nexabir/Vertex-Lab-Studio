@@ -1,0 +1,14 @@
+<svg width="700" height="160" viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(15,20) scale(1.15)">
+    <line x1="50" y1="90" x2="16" y2="70" stroke="#6D4AFF" stroke-width="7" stroke-linecap="round"/>
+    <line x1="50" y1="90" x2="34" y2="46" stroke="#17C3E6" stroke-width="7" stroke-linecap="round"/>
+    <line x1="50" y1="90" x2="58" y2="28" stroke="#FF6B4A" stroke-width="7" stroke-linecap="round"/>
+    <line x1="50" y1="90" x2="88" y2="12" stroke="#C6F135" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="16" cy="70" r="6.5" fill="#6D4AFF"/>
+    <circle cx="34" cy="46" r="6.5" fill="#17C3E6"/>
+    <circle cx="58" cy="28" r="6.5" fill="#FF6B4A"/>
+    <circle cx="88" cy="12" r="6.5" fill="#C6F135"/>
+    <circle cx="50" cy="90" r="8" fill="#14131F"/>
+  </g>
+  <text x="185" y="98" font-family="'Space Grotesk', Arial, sans-serif" font-weight="600" font-size="46" fill="#14131F">Vertex Lab Studio</text>
+</svg>
