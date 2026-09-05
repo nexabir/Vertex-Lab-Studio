@@ -6,23 +6,23 @@
 -- ---------- SERVICES ----------
 insert into services (slug, category, name, tagline, description, accent, icon, sort_order) values
 ('presentations', 'Presence', 'Presentations', 'Decks built to be presented, not just read',
- 'Pitch decks, sales presentations, and internal reports designed to carry an argument from open to close.', 'violet', 'Presentation', 1),
+ 'Pitch decks, sales presentations, and internal reports designed to carry an argument from open to close.', 'coral', 'Presentation', 1),
 ('business-dashboards', 'Insights', 'Business Dashboards', 'Power BI, Looker, Excel, or HTML',
  'Dashboards built on the platform that fits your team, hosted locally or published for the whole company to see.', 'cyanx', 'LayoutDashboard', 2),
 ('websites', 'Presence', 'Websites', 'Built, launched, and kept current',
  'Design and development for business websites, plus ongoing management once it''s live.', 'coral', 'Globe', 3),
 ('business-consultancy', 'Strategy', 'Business Consultancy', 'A second set of eyes on the hard calls',
- 'Advisory support on operations and growth planning, brought in where you need outside judgment.', 'lime', 'Compass', 4),
+ 'Advisory support on operations and growth planning, brought in where you need outside judgment.', 'violet', 'Compass', 4),
 ('marketing-sales-strategy', 'Strategy', 'Marketing & Sales Strategy', 'A plan for reaching and closing',
  'Go-to-market and sales-process strategy shaped around your market, not a generic playbook.', 'violet', 'TrendingUp', 5),
 ('business-documents', 'Strategy', 'Business Documents', 'The paperwork that keeps a company running',
- 'Creation and ongoing management of SOPs, policies, proposals, and other core documentation.', 'cyanx', 'FileText', 6),
+ 'Creation and ongoing management of SOPs, policies, proposals, and other core documentation.', 'violet', 'FileText', 6),
 ('business-analysis', 'Insights', 'Business Analysis', 'Structured reads on process and performance',
- 'A close look at how a process, team, or data set is actually performing, with findings you can act on.', 'coral', 'BarChart3', 7),
+ 'A close look at how a process, team, or data set is actually performing, with findings you can act on.', 'cyanx', 'BarChart3', 7),
 ('erp-development', 'Systems', 'ERP Development', 'Odoo, or built from scratch',
  'ERP systems on Odoo or custom code, scoped to the business functions that actually need covering.', 'lime', 'Boxes', 8),
 ('business-apps', 'Systems', 'Business Apps', 'Software for one specific job',
- 'Purpose-built apps for a business need that off-the-shelf software doesn''t quite solve.', 'violet', 'AppWindow', 9)
+ 'Purpose-built apps for a business need that off-the-shelf software doesn''t quite solve.', 'lime', 'AppWindow', 9)
 on conflict (slug) do nothing;
 
 -- ---------- QUESTIONS ----------
@@ -89,6 +89,6 @@ on conflict do nothing;
 
 -- ---------- SITE SETTINGS ----------
 insert into site_settings (key, value) values
-('contact', '{"email": "abirislam2020@gmail.com", "phone": "01797989412", "address": "Dinajpur"}'),
+('contact', '{"email": "abirislam2020@gmail.com", "phone": "01797989412", "address": ""}'),
 ('seo_defaults', '{"title": "Vertex Lab Studio — Digital products for business development", "description": "Vertex Lab Studio turns business problems into engineered digital solutions — dashboards, ERP, websites, and strategy — built to your brief."}')
 on conflict (key) do update set value = excluded.value;

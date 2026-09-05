@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <style>{`:root { --font-display: 'Space Grotesk', sans-serif; --font-body: 'Inter', sans-serif; }`}</style>
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased overflow-x-hidden max-w-full">
         <SelectionProvider>
           <Header />
           <main>{children}</main>

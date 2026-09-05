@@ -10,6 +10,7 @@ import {
   Layers,
   Newspaper,
   Settings,
+  Target,
   ExternalLink,
   LogOut,
 } from "lucide-react";
@@ -19,6 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/requests", label: "Requests", icon: Inbox },
+  { href: "/admin/problem-tracker", label: "Tracker Leads", icon: Target },
   { href: "/admin/services", label: "Services", icon: Boxes },
   { href: "/admin/combos", label: "Combos", icon: Layers },
   { href: "/admin/blog", label: "Blog", icon: Newspaper },

@@ -10,6 +10,7 @@ import { AuthStatus } from "./AuthStatus";
 import { useSelection } from "@/context/SelectionContext";
 
 const links = [
+  { href: "/problem-tracker", label: "Problem Tracker" },
   { href: "/services", label: "Services" },
   { href: "/combos", label: "Combos" },
   { href: "/portfolio", label: "Portfolio" },

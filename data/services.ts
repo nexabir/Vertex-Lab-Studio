@@ -20,7 +20,7 @@ export const services: Service[] = [
     tagline: "Decks built to be presented, not just read",
     description:
       "Pitch decks, sales presentations, and internal reports designed to carry an argument from open to close.",
-    accent: "violet",
+    accent: "coral",
     icon: "Presentation",
   },
   {
@@ -50,7 +50,7 @@ export const services: Service[] = [
     tagline: "A second set of eyes on the hard calls",
     description:
       "Advisory support on operations and growth planning, brought in where you need outside judgment.",
-    accent: "lime",
+    accent: "violet",
     icon: "Compass",
   },
   {
@@ -70,7 +70,7 @@ export const services: Service[] = [
     tagline: "The paperwork that keeps a company running",
     description:
       "Creation and ongoing management of SOPs, policies, proposals, and other core documentation.",
-    accent: "cyanx",
+    accent: "violet",
     icon: "FileText",
   },
   {
@@ -80,7 +80,7 @@ export const services: Service[] = [
     tagline: "Structured reads on process and performance",
     description:
       "A close look at how a process, team, or data set is actually performing, with findings you can act on.",
-    accent: "coral",
+    accent: "cyanx",
     icon: "BarChart3",
   },
   {
@@ -100,7 +100,7 @@ export const services: Service[] = [
     tagline: "Software for one specific job",
     description:
       "Purpose-built apps for a business need that off-the-shelf software doesn't quite solve.",
-    accent: "violet",
+    accent: "lime",
     icon: "AppWindow",
   },
 ];
