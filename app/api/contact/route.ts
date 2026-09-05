@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export async function POST(req: Request) {
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient() ?? (await createClient());
     // Reuse the requests table with no service_ids so every inbound lead —
     // general question or full brief — shows up in one admin queue.
     const { error } = await supabase.from("requests").insert({
@@ -32,8 +33,11 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true, stored: true });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Failed to store contact submission:", err);
-    return NextResponse.json({ ok: false, error: "Storage failed." }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: err?.message || "Storage failed." },
+      { status: 500 }
+    );
   }
 }
