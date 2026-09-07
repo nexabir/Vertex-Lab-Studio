@@ -20,14 +20,21 @@ export function AdminCard({
 
 export function AdminPageHeader({
   title,
+  description,
   action,
 }: {
   title: string;
+  description?: string;
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between mb-8">
-      <h1 className="font-display text-[26px] font-medium text-ink">{title}</h1>
+    <div className="flex items-center justify-between gap-4 flex-wrap mb-8">
+      <div>
+        <h1 className="font-display text-[26px] font-medium text-ink">{title}</h1>
+        {description && (
+          <p className="font-body text-[13.5px] text-muted mt-1">{description}</p>
+        )}
+      </div>
       {action}
     </div>
   );

@@ -15,6 +15,7 @@ import { InteractiveWorkflow } from "@/components/InteractiveWorkflow";
 import { InteractiveSimulator } from "@/components/InteractiveSimulator";
 import { ScopeEstimator } from "@/components/ScopeEstimator";
 import { BentoGrid } from "@/components/BentoGrid";
+import { FlagshipOffers } from "@/components/FlagshipOffers";
 import { getServices, getCombos, getSocialProofStats } from "@/lib/data";
 import { categories, Service } from "@/data/services";
 import { problemFinderCategories, howItWorksSteps } from "@/data/problem-finder";
@@ -93,6 +94,9 @@ export default async function HomePage() {
 
       {/* CAPABILITIES MARQUEE */}
       <CapabilitiesTicker />
+
+      {/* FLAGSHIP PRODUCTIZED OFFERS */}
+      <FlagshipOffers />
 
       {/* INTERACTIVE PRODUCT SIMULATOR */}
       <section className="max-w-content mx-auto px-6 py-24">

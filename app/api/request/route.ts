@@ -81,10 +81,6 @@ export async function POST(req: Request) {
       {
         ok: false,
         error: err?.message ?? "Storage failed.",
-        _debug: {
-          urlPrefix: supabaseUrl.substring(0, 30),
-          keyLen: serviceRoleKey.length,
-        },
       },
       { status: 500 }
     );
