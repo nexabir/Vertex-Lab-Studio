@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getSupabaseUrl, getSupabaseServiceRoleKey } from "@/lib/supabase/config";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
@@ -9,24 +9,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Incomplete request." }, { status: 400 });
   }
 
-  try {
-    // Check if the submitter has an active user session
-    let userId: string | null = null;
-    try {
-      const userClient = await createClient();
-      const {
-        data: { user },
-      } = await userClient.auth.getUser();
-      userId = user?.id ?? null;
-    } catch {
-      userId = null;
-    }
+  // Capture config for diagnostics (safe: only URL prefix + key length, no secrets)
+  const diagUrl = getSupabaseUrl();
+  const diagKeyLen = getSupabaseServiceRoleKey().length;
 
+  try {
     // Always use admin client (service role key) to bypass RLS
     const supabase = createAdminClient();
 
     const { error } = await supabase.from("requests").insert({
-      user_id: userId,
+      user_id: null,
       contact_name: body.contact.name,
       contact_email: body.contact.email,
       contact_phone: body.contact.phone || null,
@@ -36,21 +28,24 @@ export async function POST(req: Request) {
     });
     if (error) throw error;
 
+    // Activity log is best-effort — don't let it block success
     await supabase.from("activity_log").insert({
-      user_id: userId,
       event_type: "request_submitted",
       metadata: { service_ids: body.serviceIds, email: body.contact.email },
-    });
+    }).then(() => {}).catch(() => {});
 
     return NextResponse.json({ ok: true, receivedAt: new Date().toISOString(), stored: true });
   } catch (err: any) {
     console.error("Failed to store request:", err);
-    // Surface diagnostic info for debugging (safe: no secrets leaked)
-    const detail = err?.cause
-      ? `${err.message} (cause: ${err.cause?.code ?? err.cause})`
-      : err?.message ?? "Storage failed.";
+    const causeCode = err?.cause?.code ?? err?.cause?.message ?? String(err?.cause ?? "");
     return NextResponse.json(
-      { ok: false, error: detail },
+      {
+        ok: false,
+        error: err?.message ?? "Storage failed.",
+        cause: causeCode || undefined,
+        diagUrl: diagUrl.substring(0, 40) + "...",
+        diagKeyLen,
+      },
       { status: 500 }
     );
   }
