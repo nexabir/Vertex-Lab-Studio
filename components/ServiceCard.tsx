@@ -26,33 +26,52 @@ export function ServiceCard({ service }: { service: Service }) {
   const active = has(service.id);
 
   return (
-    <div
-      className={clsx(
-        "relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:rounded-t-xl2",
-        borderClass[service.accent],
-        "rounded-xl2 border border-line bg-white p-6 flex flex-col h-full transition-shadow hover:shadow-card"
-      )}
-    >
-      <div className={clsx("w-11 h-11 rounded-full flex items-center justify-center mb-5", iconBg[service.accent])}>
-        <Icon size={20} strokeWidth={1.75} />
-      </div>
-      <h3 className="font-display text-[19px] font-medium text-ink mb-1">{service.name}</h3>
-      <p className="font-body text-[13px] text-muted mb-3">{service.tagline}</p>
-      <p className="font-body text-[14px] leading-relaxed text-ink-soft mb-6 flex-1">
-        {service.description}
-      </p>
-      <button
-        onClick={() => toggle(service.id)}
+    <div className="group rounded-2xl p-1 bg-paper/70 border border-line/80 hover:border-line transition-all duration-300 hover:-translate-y-1 hover:shadow-card flex flex-col h-full">
+      <div
         className={clsx(
-          "inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-medium font-body transition-colors self-start",
-          active
-            ? "bg-ink text-cream"
-            : "bg-cream text-ink hover:bg-ink hover:text-cream"
+          "relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:rounded-t-xl",
+          borderClass[service.accent],
+          "rounded-[calc(1rem-2px)] bg-white p-6 flex flex-col h-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]"
         )}
       >
-        {active ? <Check size={14} /> : <Plus size={14} />}
-        {active ? "Added to request" : "Add to request"}
-      </button>
+        <div className="flex items-center justify-between mb-4">
+          <div
+            className={clsx(
+              "w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-105",
+              iconBg[service.accent]
+            )}
+          >
+            <Icon size={19} strokeWidth={1.8} />
+          </div>
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted/70">
+            {service.category}
+          </span>
+        </div>
+
+        <h3 className="font-display text-[18px] font-semibold text-ink mb-1 group-hover:text-violet transition-colors">
+          {service.name}
+        </h3>
+        <p className="font-body text-[12.5px] font-medium text-muted mb-3">{service.tagline}</p>
+        <p className="font-body text-[13.5px] leading-relaxed text-ink-soft mb-6 flex-1">
+          {service.description}
+        </p>
+
+        {/* Pin to bottom */}
+        <div className="pt-2 mt-auto border-t border-line/50 flex items-center justify-between">
+          <button
+            onClick={() => toggle(service.id)}
+            className={clsx(
+              "inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-[12.5px] font-medium font-body transition-all duration-200 active:scale-[0.96]",
+              active
+                ? "bg-ink text-cream shadow-sm"
+                : "bg-cream/70 text-ink hover:bg-ink hover:text-cream"
+            )}
+          >
+            {active ? <Check size={13} /> : <Plus size={13} />}
+            {active ? "Added to request" : "Add to request"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

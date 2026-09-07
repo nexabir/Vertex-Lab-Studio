@@ -4,6 +4,7 @@ import { SelectionProvider } from "@/context/SelectionContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SelectionTray } from "@/components/SelectionTray";
+import { StickyBottomCta } from "@/components/StickyBottomCta";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <Footer />
           <SelectionTray />
+          <StickyBottomCta />
         </SelectionProvider>
       </body>
     </html>

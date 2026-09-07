@@ -9,6 +9,9 @@ import { Anmi } from "@/components/Anmi";
 import { PoseCard } from "@/components/PoseCard";
 import { AnmiFeatureCard } from "@/components/AnmiFeatureCard";
 import { ProblemHub } from "@/components/ProblemHub";
+import { HeroProblemSelector } from "@/components/HeroProblemSelector";
+import { CapabilitiesTicker } from "@/components/CapabilitiesTicker";
+import { InteractiveWorkflow } from "@/components/InteractiveWorkflow";
 import { getServices, getCombos } from "@/lib/data";
 import { categories, Service } from "@/data/services";
 import { problemFinderCategories, howItWorksSteps } from "@/data/problem-finder";
@@ -45,15 +48,8 @@ export default async function HomePage() {
               unclear challenges into practical digital solutions — one point of contact for
               every digital need.
             </p>
-            <div className="flex flex-wrap items-center gap-4 mb-12">
-              <Button href="/problem-tracker" variant="primary" size="lg" className="!bg-violet hover:!bg-[#5b3ce0]">
-                Tell Us Your Problem <ArrowRight size={16} />
-              </Button>
-              <a href="#how-it-works" className="inline-flex items-center gap-2 rounded-full border border-cream/25 text-cream/85 px-6 py-3.5 text-[15px] font-medium hover:border-cream transition-colors">
-                See What We Solve <ArrowDown size={14} />
-              </a>
-            </div>
-            <div className="grid grid-cols-4 gap-4 border-t border-cream/10 pt-6 max-w-[440px]">
+            <HeroProblemSelector />
+            <div className="grid grid-cols-4 gap-4 border-t border-cream/10 pt-6 mt-8 max-w-[440px]">
               <div>
                 <p className="font-display text-[22px] font-semibold text-cream">{services.length}</p>
                 <p className="font-body text-[11px] text-cream/45">Services</p>
@@ -88,6 +84,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* CAPABILITIES MARQUEE */}
+      <CapabilitiesTicker />
 
       {/* PROBLEM FINDER */}
       <section className="max-w-content mx-auto px-6 py-28 text-center">
@@ -152,25 +151,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* HOW IT WORKS — Interactive Workflow */}
       <section id="how-it-works" className="max-w-content mx-auto px-6 py-28 scroll-mt-[76px]">
-        <h2 className="font-display text-[30px] sm:text-[36px] font-medium text-ink mb-14 max-w-[600px]">
-          From Problem to Progress
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {howItWorksSteps.map((s, i) => (
-            <PoseCard
-              key={s.n}
-              pose={s.pose}
-              accent={s.accent}
-              eyebrow={s.n}
-              title={s.title}
-              description={s.desc}
-              size={140}
-              index={i}
-            />
-          ))}
+        <div className="text-center mb-12">
+          <Eyebrow>How It Works</Eyebrow>
+          <h2 className="font-display text-[30px] sm:text-[36px] font-medium text-ink max-w-[600px] mx-auto">
+            From Problem to Progress
+          </h2>
         </div>
+        <InteractiveWorkflow />
       </section>
 
       {/* SERVICES */}
