@@ -79,10 +79,13 @@ export function AuthStatus({ dark }: { dark?: boolean }) {
   }
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex items-center gap-4">
+      <Link href="/dashboard" className={linkClass}>
+        <LayoutDashboard size={15} /> Dashboard
+      </Link>
       {auth.role === "admin" && (
         <Link href="/admin" className={linkClass}>
-          <LayoutDashboard size={15} /> Admin
+          Admin
         </Link>
       )}
       <button onClick={handleSignOut} className={linkClass}>

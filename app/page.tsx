@@ -12,7 +12,10 @@ import { ProblemHub } from "@/components/ProblemHub";
 import { HeroProblemSelector } from "@/components/HeroProblemSelector";
 import { CapabilitiesTicker } from "@/components/CapabilitiesTicker";
 import { InteractiveWorkflow } from "@/components/InteractiveWorkflow";
-import { getServices, getCombos } from "@/lib/data";
+import { InteractiveSimulator } from "@/components/InteractiveSimulator";
+import { ScopeEstimator } from "@/components/ScopeEstimator";
+import { BentoGrid } from "@/components/BentoGrid";
+import { getServices, getCombos, getSocialProofStats } from "@/lib/data";
 import { categories, Service } from "@/data/services";
 import { problemFinderCategories, howItWorksSteps } from "@/data/problem-finder";
 
@@ -26,8 +29,11 @@ const whyPoints = [
 ];
 
 export default async function HomePage() {
-  const services = await getServices();
-  const combos = await getCombos();
+  const [services, combos, socialProof] = await Promise.all([
+    getServices(),
+    getCombos(),
+    getSocialProofStats(),
+  ]);
   const grouped = categories.map((cat) => ({
     cat,
     items: services.filter((s: Service) => s.category === cat),
@@ -87,6 +93,20 @@ export default async function HomePage() {
 
       {/* CAPABILITIES MARQUEE */}
       <CapabilitiesTicker />
+
+      {/* INTERACTIVE PRODUCT SIMULATOR */}
+      <section className="max-w-content mx-auto px-6 py-24">
+        <div className="text-center mb-10">
+          <Eyebrow>See It In Action</Eyebrow>
+          <h2 className="font-display text-[30px] sm:text-[36px] font-medium text-ink max-w-[640px] mx-auto mb-3">
+            Engineered systems that run real businesses
+          </h2>
+          <p className="font-body text-[15px] text-muted max-w-[500px] mx-auto">
+            Interact with simulated live demos of dashboards, ERP pipelines, and high-conversion web apps built by Vertex Lab Studio.
+          </p>
+        </div>
+        <InteractiveSimulator />
+      </section>
 
       {/* PROBLEM FINDER */}
       <section className="max-w-content mx-auto px-6 py-28 text-center">
@@ -198,22 +218,37 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* WHY VLS */}
-      <section className="bg-ink">
-        <div className="max-w-content mx-auto px-6 py-28 grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-14">
-          <div>
-            <h2 className="font-display text-[30px] sm:text-[34px] font-medium text-cream max-w-[400px]">
+      {/* SCOPE & TIMELINE ESTIMATOR */}
+      <section className="bg-cream/40 border-y border-line py-28">
+        <div className="max-w-content mx-auto px-6">
+          <div className="text-center mb-12">
+            <Eyebrow>Project Runway & Estimator</Eyebrow>
+            <h2 className="font-display text-[30px] sm:text-[36px] font-medium text-ink max-w-[640px] mx-auto mb-3">
+              Calculate delivery timeline & architecture scope
+            </h2>
+            <p className="font-body text-[15px] text-muted max-w-[500px] mx-auto">
+              Select your foundational stack and required modules to see realistic engineering runways.
+            </p>
+          </div>
+          <ScopeEstimator />
+        </div>
+      </section>
+
+      {/* WHY VLS — BENTO GRID */}
+      <section className="bg-ink py-28 border-y border-white/10">
+        <div className="max-w-content mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-cream/10 text-cream text-[12px] font-semibold tracking-wide uppercase mb-3">
+              Why Vertex Lab Studio
+            </span>
+            <h2 className="font-display text-[32px] sm:text-[40px] font-semibold text-cream max-w-[640px] mx-auto leading-tight">
               A studio built around one intake, not one specialty.
             </h2>
+            <p className="font-body text-[15px] text-cream/60 max-w-[500px] mx-auto mt-3">
+              Direct technical execution spanning business dashboards, custom ERPs, and high-conversion web platforms.
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10">
-            {whyPoints.map((p) => (
-              <div key={p.title}>
-                <h3 className="font-display text-[17px] font-medium text-cream mb-2">{p.title}</h3>
-                <p className="font-body text-[14px] leading-relaxed text-cream/55">{p.desc}</p>
-              </div>
-            ))}
-          </div>
+          <BentoGrid stats={socialProof} />
         </div>
       </section>
 

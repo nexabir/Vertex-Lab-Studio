@@ -1,32 +1,46 @@
 import { Eyebrow } from "@/components/Eyebrow";
-import { portfolioSlots } from "@/data/portfolio";
-import { accentBg } from "@/lib/accent";
+import { PortfolioShowcase } from "@/components/PortfolioShowcase";
+import { getPortfolioProjects } from "@/lib/data";
+import { Button } from "@/components/Button";
+import { ArrowRight } from "lucide-react";
 
-export default function PortfolioPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PortfolioPage() {
+  const projects = await getPortfolioProjects();
+
   return (
     <div className="max-w-content mx-auto px-6 pt-[150px] pb-24">
-      <Eyebrow>Selected work</Eyebrow>
-      <h1 className="font-display text-[36px] sm:text-[44px] font-medium text-ink mb-5 max-w-[640px]">
-        Portfolio
-      </h1>
-      <p className="font-body text-[15px] leading-relaxed text-muted max-w-[540px] mb-14">
-        Case studies land here as projects wrap. First up — a slot for each product line.
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {portfolioSlots.map((slot) => (
-          <div
-            key={slot.category}
-            className="rounded-xl2 border border-dashed border-line bg-white/60 p-7 h-[240px] flex flex-col justify-between"
-          >
-            <span className={`w-8 h-1.5 rounded-full ${accentBg[slot.accent]}`} />
-            <div>
-              <p className="font-body text-[12px] font-semibold tracking-[0.14em] uppercase text-muted mb-2">
-                Coming soon
-              </p>
-              <p className="font-display text-[17px] font-medium text-ink-soft">{slot.category}</p>
-            </div>
-          </div>
-        ))}
+      <div className="max-w-[700px] mb-12">
+        <Eyebrow>Selected Case Studies</Eyebrow>
+        <h1 className="font-display text-[36px] sm:text-[46px] font-semibold text-ink mb-4 tracking-tight leading-tight">
+          Engineered solutions for complex business operations.
+        </h1>
+        <p className="font-body text-[16px] leading-relaxed text-muted">
+          Explore how Vertex Lab Studio turns operational bottlenecks into custom BI dashboards, scalable ERP platforms, and high-conversion web applications.
+        </p>
+      </div>
+
+      <PortfolioShowcase projects={projects} />
+
+      {/* Bottom CTA */}
+      <div className="mt-20 p-10 md:p-14 rounded-2xl bg-ink text-cream border border-line flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+        <div className="max-w-[520px]">
+          <h2 className="font-display text-[26px] md:text-[32px] font-semibold text-cream mb-3">
+            Have an operational challenge of your own?
+          </h2>
+          <p className="font-body text-[15px] text-cream/65 leading-relaxed">
+            Write down what isn&rsquo;t working. We&rsquo;ll review your brief and deliver a tailored scope and architecture plan within 48 hours.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3.5 w-full md:w-auto">
+          <Button href="/problem-tracker" variant="secondary" size="lg">
+            Diagnose Problem First
+          </Button>
+          <Button href="/request" size="lg">
+            Start a Request <ArrowRight size={15} />
+          </Button>
+        </div>
       </div>
     </div>
   );

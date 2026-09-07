@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Calendar } from "lucide-react";
 import { RaysMark } from "./RaysMark";
 import { AuthStatus } from "./AuthStatus";
+import { BookingModal } from "./BookingModal";
 import { useSelection } from "@/context/SelectionContext";
 
 const links = [
@@ -23,6 +24,7 @@ export function Header() {
   const { selected } = useSelection();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   const transparentEligible = pathname === "/";
   const isTransparent = transparentEligible && !scrolled;
@@ -71,6 +73,19 @@ export function Header() {
               {l.label}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => setBookingOpen(true)}
+            className={clsx(
+              "inline-flex items-center gap-1.5 font-body text-[13px] font-medium px-3.5 py-1.5 rounded-full transition-colors",
+              isTransparent
+                ? "text-cream/80 hover:text-cream hover:bg-white/10"
+                : "text-ink-soft hover:text-ink hover:bg-cream"
+            )}
+          >
+            <Calendar size={13} className="text-cyanx" />
+            Book Call
+          </button>
           <AuthStatus dark={isTransparent} />
           <Link
             href="/request"
@@ -111,6 +126,17 @@ export function Header() {
             </Link>
           ))}
           <div className="pt-2 border-t border-line flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                setBookingOpen(true);
+              }}
+              className="inline-flex items-center justify-center gap-2 font-body text-[13.5px] font-medium rounded-full border border-line py-2.5 text-ink hover:bg-cream transition-colors"
+            >
+              <Calendar size={15} className="text-cyanx" />
+              Book a 15-Min Discovery Call
+            </button>
             <AuthStatus />
             <Link
               href="/request"
@@ -122,6 +148,8 @@ export function Header() {
           </div>
         </div>
       )}
+
+      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
     </header>
   );
 }
