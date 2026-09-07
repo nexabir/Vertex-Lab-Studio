@@ -1,22 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
+import { getSupabaseUrl, getSupabaseServiceRoleKey } from "./config";
 
 /**
  * Creates an elevated Supabase client for server-side operations
  * (API route handlers, background tasks) that need to bypass RLS
  * or insert inbound submissions safely.
  *
- * Uses SUPABASE_SERVICE_ROLE_KEY if set in environment variables,
- * and falls back to NEXT_PUBLIC_SUPABASE_ANON_KEY.
+ * Always uses the service-role key (with hardcoded fallback)
+ * so inserts are never blocked by RLS policies.
  */
 export function createAdminClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) {
-    return null;
-  }
+  const url = getSupabaseUrl();
+  const key = getSupabaseServiceRoleKey();
 
   return createClient(url, key, {
     auth: {

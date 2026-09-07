@@ -1,19 +1,12 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
 
   if (!body?.contact?.email || !Array.isArray(body?.serviceIds) || body.serviceIds.length === 0) {
     return NextResponse.json({ ok: false, error: "Incomplete request." }, { status: 400 });
-  }
-
-  if (!isSupabaseConfigured()) {
-    // No database connected yet — log so nothing is silently lost.
-    console.log("New service request (Supabase not configured):", JSON.stringify(body, null, 2));
-    return NextResponse.json({ ok: true, receivedAt: new Date().toISOString(), stored: false });
   }
 
   try {
@@ -29,8 +22,8 @@ export async function POST(req: Request) {
       userId = null;
     }
 
-    // Use admin client if available (service role bypasses RLS) or fallback to server client
-    const supabase = createAdminClient() ?? (await createClient());
+    // Always use admin client (service role key) to bypass RLS
+    const supabase = createAdminClient();
 
     const { error } = await supabase.from("requests").insert({
       user_id: userId,
@@ -52,8 +45,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, receivedAt: new Date().toISOString(), stored: true });
   } catch (err: any) {
     console.error("Failed to store request:", err);
+    // Surface diagnostic info for debugging (safe: no secrets leaked)
+    const detail = err?.cause
+      ? `${err.message} (cause: ${err.cause?.code ?? err.cause})`
+      : err?.message ?? "Storage failed.";
     return NextResponse.json(
-      { ok: false, error: err?.message || "Storage failed." },
+      { ok: false, error: detail },
       { status: 500 }
     );
   }
