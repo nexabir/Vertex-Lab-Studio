@@ -39,7 +39,8 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 pt-3 sm:pt-4 pointer-events-none transition-all duration-300">
+    <>
+      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 pt-3 sm:pt-4 pointer-events-none transition-all duration-300">
       <div
         className={clsx(
           "pointer-events-auto max-w-content mx-auto h-[64px] sm:h-[68px] px-4 sm:px-6 rounded-full flex items-center justify-between transition-all duration-300 shadow-sm",
@@ -148,8 +149,9 @@ export function Header() {
           </div>
         </div>
       )}
+      </header>
 
       <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
-    </header>
+    </>
   );
 }
