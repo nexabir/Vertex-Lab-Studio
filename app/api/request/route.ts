@@ -1,50 +1,90 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { getSupabaseUrl, getSupabaseServiceRoleKey } from "@/lib/supabase/config";
 
+/**
+ * POST /api/request
+ * Inserts a service request into the Supabase `requests` table.
+ *
+ * Uses direct fetch to the Supabase REST API instead of the JS client
+ * to avoid any module-bundling or env-var issues on Vercel.
+ */
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
 
-  if (!body?.contact?.email || !Array.isArray(body?.serviceIds) || body.serviceIds.length === 0) {
-    return NextResponse.json({ ok: false, error: "Incomplete request." }, { status: 400 });
+  if (
+    !body?.contact?.email ||
+    !Array.isArray(body?.serviceIds) ||
+    body.serviceIds.length === 0
+  ) {
+    return NextResponse.json(
+      { ok: false, error: "Incomplete request." },
+      { status: 400 }
+    );
   }
 
-  // Capture config for diagnostics (safe: only URL prefix + key length, no secrets)
-  const diagUrl = getSupabaseUrl();
-  const diagKeyLen = getSupabaseServiceRoleKey().length;
+  const supabaseUrl = getSupabaseUrl();
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+
+  const row = {
+    user_id: null,
+    contact_name: body.contact.name ?? "",
+    contact_email: body.contact.email,
+    contact_phone: body.contact.phone || null,
+    company: body.contact.company || null,
+    service_ids: body.serviceIds,
+    answers: body.answers ?? {},
+  };
 
   try {
-    // Always use admin client (service role key) to bypass RLS
-    const supabase = createAdminClient();
-
-    const { error } = await supabase.from("requests").insert({
-      user_id: null,
-      contact_name: body.contact.name,
-      contact_email: body.contact.email,
-      contact_phone: body.contact.phone || null,
-      company: body.contact.company || null,
-      service_ids: body.serviceIds,
-      answers: body.answers ?? {},
+    const res = await fetch(`${supabaseUrl}/rest/v1/requests`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify(row),
     });
-    if (error) throw error;
 
-    // Activity log is best-effort — don't let it block success
-    await supabase.from("activity_log").insert({
-      event_type: "request_submitted",
-      metadata: { service_ids: body.serviceIds, email: body.contact.email },
-    }).then(() => {}).catch(() => {});
+    if (!res.ok) {
+      const errBody = await res.text().catch(() => "");
+      throw new Error(`Supabase insert failed (${res.status}): ${errBody}`);
+    }
 
-    return NextResponse.json({ ok: true, receivedAt: new Date().toISOString(), stored: true });
+    // Activity log — best-effort, don't block success
+    fetch(`${supabaseUrl}/rest/v1/activity_log`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        event_type: "request_submitted",
+        metadata: {
+          service_ids: body.serviceIds,
+          email: body.contact.email,
+        },
+      }),
+    }).catch(() => {});
+
+    return NextResponse.json({
+      ok: true,
+      receivedAt: new Date().toISOString(),
+      stored: true,
+    });
   } catch (err: any) {
     console.error("Failed to store request:", err);
-    const causeCode = err?.cause?.code ?? err?.cause?.message ?? String(err?.cause ?? "");
     return NextResponse.json(
       {
         ok: false,
         error: err?.message ?? "Storage failed.",
-        cause: causeCode || undefined,
-        diagUrl: diagUrl.substring(0, 40) + "...",
-        diagKeyLen,
+        _debug: {
+          urlPrefix: supabaseUrl.substring(0, 30),
+          keyLen: serviceRoleKey.length,
+        },
       },
       { status: 500 }
     );
